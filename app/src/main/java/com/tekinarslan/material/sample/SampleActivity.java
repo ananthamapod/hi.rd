@@ -23,7 +23,7 @@ public class SampleActivity extends ActionBarActivity {
 
     private ListView mDrawerList;
     ViewPager pager;
-    private String titles[] = new String[]{"Sample Tab 1", "Broadcast Resume", "Sample Tab 3"};
+    private String titles[] = new String[]{"Current Resume", "Broadcast Resume", "History"};
     private Toolbar toolbar;
 
     SlidingTabLayout slidingTabLayout;

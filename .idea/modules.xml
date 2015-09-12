@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AndroidMaterialDesignToolbar.iml" filepath="$PROJECT_DIR$/AndroidMaterialDesignToolbar.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hi.rd.iml" filepath="$PROJECT_DIR$/hi.rd.iml" />
     </modules>
   </component>
 </project>

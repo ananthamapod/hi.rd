@@ -1,9 +1,10 @@
-AndroidMaterialDesignToolbar
+hi.rd
+
 ============================
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-AndroidMaterialDesignToolbar-brightgreen.svg?style=flat)](https://android-arsenal.com/details/3/1125)
 
-Android Sample Project with Material Design and Toolbar.
-Project use Appcompat library for material design.
+
+this is a repository for the hird project that allows you to broadcast your resume to recruiters so that you don't have to send them yourself.
 
 Project Contain
 ============================
