@@ -3,6 +3,7 @@ package com.tekinarslan.material.sample;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.os.Build.VERSION_CODES;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -22,8 +24,6 @@ import org.json.JSONObject;
 
 
 
-// import statement for the r file of this app. 
-// "the build of your app that accesses all declared resources "
 
 public class LoginActivity extends ActionBarActivity {
     // create global null pointers to all of the resources that we will use in this activity
@@ -34,7 +34,7 @@ public class LoginActivity extends ActionBarActivity {
     AutoCompleteTextView email;
     Context ctx;
 
-
+    // TODO learn to import this in other activities
     private static String HttpGet(String url) {
 
         try {
@@ -53,7 +53,9 @@ public class LoginActivity extends ActionBarActivity {
 
         } catch (Exception e) {
 
-            System.out.println("exception: " + e);
+            e.printStackTrace();
+            Log.d("hi.rd", "ERROR in HTTPGet");
+
         }
 
         return null;
@@ -67,13 +69,13 @@ public class LoginActivity extends ActionBarActivity {
         // set the content view to the activity_main xml file
         setContentView(R.layout.activity_login);
         ctx = this;
-
         sign_button = (Button) findViewById(R.id.email_sign_in_button);
-
         plus_button = (com.google.android.gms.common.SignInButton) findViewById(R.id.plus_sign_in_button);
-
         psswd = (EditText) findViewById(R.id.password);
         email = (AutoCompleteTextView) findViewById(R.id.email);
+        // small hack for dealing with blocking http
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
 
 
         sign_button.setOnClickListener(new View.OnClickListener() {
@@ -83,9 +85,8 @@ public class LoginActivity extends ActionBarActivity {
                 String input_pass = psswd.getText().toString();
 
                 Log.w("hi.rd", "received form inputs, " + input_email + " : " + input_pass);
-
                 // create a JSON obj
-                String temp_url = "http://45.55.243.40?email=" + input_email + "&passwd=" + input_pass;
+                String temp_url = "http://45.55.243.40/validate_credentials?email=" + input_email + "&pass=" + input_pass;
 
                 int duration = Toast.LENGTH_SHORT;
 
@@ -94,14 +95,25 @@ public class LoginActivity extends ActionBarActivity {
 
 
                 try {
-                    String return_val = HttpGet("http://45.55.243.40") ;
 
-                    Log.d("a" , return_val);
+                    String return_val = HttpGet(temp_url) ;
+
+
+                    Log.d("hi.rd" , return_val);
                     JSONObject temp = new JSONObject(return_val);
 
-                    if ((boolean) temp.get("valid") == true) {
-                        // credentials valid render new activity
+                    if ((boolean)temp.get("valid") == true){
+                        toast = Toast.makeText(ctx, "welcome, "+input_email, duration);
+                        toast.show();
+                        // credentials valid, render new activity, set logged in param
+                        Global user = new Global(true, input_email);
+
                         Intent intent = new Intent(ctx, SampleActivity.class);
+                        Bundle tempBundle = new Bundle();
+                        tempBundle.putBoolean("auth", true);
+                        tempBundle.putString("username", input_email);
+                        intent.putExtra("user", tempBundle);
+
                         startActivity(intent);
 
                     } else {
@@ -110,12 +122,10 @@ public class LoginActivity extends ActionBarActivity {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.w("hi.rd", "UNABLE TO MAKE JSON REQUEST");
                     toast = Toast.makeText(ctx, "No internet access", duration);
                     toast.show();
 
                 }
-
 
             }
         });

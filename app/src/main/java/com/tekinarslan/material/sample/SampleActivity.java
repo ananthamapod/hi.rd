@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 
 public class SampleActivity extends AppCompatActivity {
@@ -32,10 +40,39 @@ public class SampleActivity extends AppCompatActivity {
     SlidingTabLayout slidingTabLayout;
 
 
+    private static String HttpGet(String url) {
+
+        try {
+
+            HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
+            InputStream is = new BufferedInputStream(urlConnection.getInputStream());
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+
+            String line = "";
+            String response = "";
+            while ((line = rd.readLine()) != null) {
+                response += line;
+            }
+
+            return response;
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+            Log.d("hi.rd", "ERROR in HTTPGet");
+
+        }
+
+        return null;
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sample);
+        Bundle user = getIntent().getBundleExtra("user");
+        Log.d("BUNDLE", (String)user.get("username"));
 
         /************************** DRAWER SETUP ******************************/
 
@@ -48,7 +85,7 @@ public class SampleActivity extends AppCompatActivity {
         }
         pager = (ViewPager) findViewById(R.id.viewpager);
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.sliding_tabs);
-        pager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), titles));
+        pager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), titles, user));
 
         slidingTabLayout.setViewPager(pager);
         slidingTabLayout.setCustomTabColorizer(new SlidingTabLayout.TabColorizer() {
@@ -105,48 +142,6 @@ public class SampleActivity extends AppCompatActivity {
             }
         });
 
-        /*********************** REGISTERING HANDLERS **************************/
-
-        final Button upload_resume_btn = (Button) findViewById(R.id.upload_resume_btn);
-        upload_resume_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v.getId() == R.id.upload_resume_btn) {
-                    // This button actually does not make sense.
-                    // I refuse to do any more work until it makes sense.
-                }
-            }
-        });
-
-        final Button send_resume_btn = (Button) findViewById(R.id.send_resume_btn);
-        send_resume_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v.getId() == R.id.send_resume_btn) {
-                    EditText email_field = (EditText) findViewById(R.id.recruit_mail_email_field);
-                    EditText subject_field = (EditText) findViewById(R.id.recruit_mail_subject_field);
-                    EditText body_field = (EditText) findViewById(R.id.recruit_mail_body_field);
-
-                    String email_addr = email_field.getText().toString();
-                    String email_subj = subject_field.getText().toString();
-                    String email_body = body_field.getText().toString();
-
-
-                }
-            }
-        });
-
-        final Button broadcast_btn = (Button) findViewById(R.id.broadcast_btn);
-        broadcast_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(v.getId() == R.id.broadcast_btn) {
-
-                    //Pull the email from the recruiter from the NFC here
-
-                }
-            }
-        });
     }
 
     @Override
