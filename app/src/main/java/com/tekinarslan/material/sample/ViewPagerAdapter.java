@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    final int PAGE_COUNT=3;
+    final int PAGE_COUNT=4;
     private String titles[] ;
 
     public ViewPagerAdapter(FragmentManager fm, String[] titles2) {

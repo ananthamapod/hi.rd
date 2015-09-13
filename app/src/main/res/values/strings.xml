@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Material Toolbar</string>
+    <string name="app_name">hi.rd</string>
     <string name="drawer_open">drawer_open</string>
     <string name="drawer_close">drawer_close</string>
     <string name="title_activity_acct_type">acct_type</string>
+
+    <string name="username_label">Username:</string>
+    <string name="pass_label">Password:</string>
+    <string name="linkedin_label">LinkedIn:</string>
+    <string name="github_label">GitHub:</string>
+    <string name="resume_btn_label">Upload Resume</string>
+
+    <string name="org_label">Organization</string>
+
+    <string name="broadcast_btn_label">Broadcast Resume By NFC</string>
+
+    <string name="email_label">Email:</string>
+    <string name="subject_label">Subject:</string>
+    <string name="body_label">Body:</string>
+    <string name="send_resume_btn_label">Send Resume</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>

@@ -28,14 +28,16 @@ import org.json.JSONObject;
 public class LoginActivity extends ActionBarActivity {
     // create global null pointers to all of the resources that we will use in this activity
     Button sign_button;
+    com.google.android.gms.common.SignInButton plus_button;
+
     EditText psswd;
     AutoCompleteTextView email;
     Context ctx;
 
 
-    private static String HttpGet(String url){
+    private static String HttpGet(String url) {
 
-        try{
+        try {
 
             HttpURLConnection urlConnection = (HttpURLConnection) new URL(url).openConnection();
             InputStream is = new BufferedInputStream(urlConnection.getInputStream());
@@ -43,13 +45,13 @@ public class LoginActivity extends ActionBarActivity {
 
             String line = "";
             String response = "";
-            while ((line = rd.readLine()) != null){
+            while ((line = rd.readLine()) != null) {
                 response += line;
             }
 
             return response;
 
-        } catch(Exception e){
+        } catch (Exception e) {
 
             System.out.println("exception: " + e);
         }
@@ -58,17 +60,20 @@ public class LoginActivity extends ActionBarActivity {
     }
 
 
-    @Override  // on the creation of this context, create the content views, initialize instances and set content view from R.java
-    protected void onCreate(Bundle savedInstanceState){
+    @Override
+    // on the creation of this context, create the content views, initialize instances and set content view from R.java
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // set the content view to the activity_main xml file
         setContentView(R.layout.activity_login);
         ctx = this;
 
-        sign_button = (Button)findViewById(R.id.email_sign_in_button);
+        sign_button = (Button) findViewById(R.id.email_sign_in_button);
 
-        psswd = (EditText)findViewById(R.id.email);
-        email = (AutoCompleteTextView)findViewById(R.id.email);
+        plus_button = (com.google.android.gms.common.SignInButton) findViewById(R.id.plus_sign_in_button);
+
+        psswd = (EditText) findViewById(R.id.password);
+        email = (AutoCompleteTextView) findViewById(R.id.email);
 
 
         sign_button.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +85,7 @@ public class LoginActivity extends ActionBarActivity {
                 Log.w("hi.rd", "received form inputs, " + input_email + " : " + input_pass);
 
                 // create a JSON obj
-                String temp_url = "http://our_server.com?email="+input_pass+"&passwd="+input_pass ;
+                String temp_url = "http://45.55.243.40?email=" + input_email + "&passwd=" + input_pass;
 
                 int duration = Toast.LENGTH_SHORT;
 
@@ -89,18 +94,41 @@ public class LoginActivity extends ActionBarActivity {
 
 
                 try {
-                    JSONObject temp = new JSONObject(HttpGet(temp_url));
-                }catch(Exception e){
-                    Log.w("hi.rd","UNABLE TO MAKE JSON REQUEST");
+                    String return_val = HttpGet("http://45.55.243.40") ;
+
+                    Log.d("a" , return_val);
+                    JSONObject temp = new JSONObject(return_val);
+
+                    if ((boolean) temp.get("valid") == true) {
+                        // credentials valid render new activity
+                        Intent intent = new Intent(ctx, SampleActivity.class);
+                        startActivity(intent);
+
+                    } else {
+                        toast = Toast.makeText(ctx, "Invalid user or email, please retry.", duration);
+                        toast.show();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.w("hi.rd", "UNABLE TO MAKE JSON REQUEST");
+                    toast = Toast.makeText(ctx, "No internet access", duration);
+                    toast.show();
+
                 }
 
-                // intent listener, when the NEXT button is clicked, initialize our new intent
-                Intent intent = new Intent(ctx,SampleActivity.class);
-                // now start our new activity because our previous intent was initialized
-                startActivity(intent);
+
             }
         });
 
+        plus_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // credentials valid render new activity
+                Intent intent = new Intent(ctx, SampleActivity.class);
+                startActivity(intent);
+            }
+
+        });
 
     }
 

@@ -23,9 +23,9 @@ public class SampleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         position = getArguments().getInt(ARG_POSITION);
-        View rootView = inflater.inflate(R.layout.page, container, false);
+        View rootView = inflater.inflate((R.layout.page + (position+1)), container, false);
 
-        ProgressBarCircular progressBarCircular = (ProgressBarCircular) rootView.findViewById(R.id.progress);
+/*        ProgressBarCircular progressBarCircular = (ProgressBarCircular) rootView.findViewById(R.id.progress);
         FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fabButton);
         fab.setDrawableIcon(getResources().getDrawable(R.drawable.plus));
         switch (position) {
@@ -49,7 +49,7 @@ public class SampleFragment extends Fragment {
 
                 break;
         }
-
+*/
         return rootView;
     }
 }

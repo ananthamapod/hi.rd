@@ -13,6 +13,13 @@
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
 
+    <!-- NFC permissions and restrictions -->
+    <uses-permission android:name="android.permission.NFC" />
+    <!-- Need more then SDK 10 for properly reading NFC messages the new way -->
+    <uses-sdk android:minSdkVersion="10"/>
+    <!-- Specifies that the app uses NFC so that only devices that have NFC enabled can see it in the play store -->
+    <uses-feature android:name="android.hardware.nfc" android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
